@@ -1,11 +1,5 @@
 {
-	"intents": {
-		{
-      "intent": "AMAZON.PauseIntent"
-    },
-    {
-      "intent": "AMAZON.ResumeIntent"
-    }
+	"intents": [
 	  {
 	  	"intent": "Go"
 	  },
@@ -23,9 +17,6 @@
 	  },
 	  {
 	  	"intent": "Interact"
-	  },
-	  {
-	  	"intent": "Inventory"
 	  }
-	}
+	]
 }
