@@ -59,17 +59,19 @@ def handle_session_end_request():
     return build_response({},build_speechlet_response("Exit","Thank you for playing. Big sister is watching.","",True))
 
 def move(intent, session):
-  movement, room = session['attributes']
+  movement = session['attributes']['movement']
+  room = session['attributes']['room']
   #if "direction" in intent['slot']:
     #direction = intent['slot']['direction']['value']
     #position = movement.getNextPosition(direction)
   move_str = movement.changePosition(direction)
-  session['attributes'] = setAttributes(movement, room)
+  session_attributes = setAttributes(movement, room)
   build_response(session_attributes,build_speechlet_response("Move",move_str,"",False))
 
 def info(intent, session):
-  movement, room = session['attributes']
-  build_response({},build_speechlet_response("Info",room.getInfo() + movement.getMovementOptionsText(),"",True))
+  movement = session['attributes']['movement']
+  room = session['attributes']['room']
+  build_response({},build_speechlet_response("Info",room.getInfo() + movement.getMovementOptionsText(),"Anything else?",False))
 
 def help():
     help = "Use your voice to move around and interact with things."
