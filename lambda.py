@@ -64,12 +64,9 @@ def help():
     return build_response({},build_speechlet_response("Help",help,"",False))
 
 def interact(intent, session):
-  if "name" in intent['slots']:
-    obj = intent['slots']['name']['type']
+  obj = intent['slots']['Object']['value']
   pos = movement.getPositionName()
   text = room.interact(pos, obj)
-
-  session['attributes'] = getAttributes(movement, room)
 
   build_response({},build_speechlet_response("Interact",text,"",True))
 # --------------- Events ------------------
