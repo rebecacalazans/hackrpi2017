@@ -1,25 +1,13 @@
 from __future__ import print_function
 import gameMovement
 import gameRoom
-import pickle
 
 ##ALL GLOBALS MUST BE PASSED AS SESSION ATTRIBUTES
+
+movement = gameMovement.Game()
+room = gameRoom.RoomInteraction()
+
 # --------------- Helpers that build all of the responses ----------------------
-
-def getVariables(session_attributes):
-  movement = session_attributes['movement']
-  room = session_attributes['roomInteraction']
-  movement = pickle.loads(movement)
-  room = pickle.loads(room)
-
-  return(movement, room)
-
-def setVariables(session_attributes, movement, room):
-  movement = pickle.dumps(movement)
-  room = pickle.dumps(room)
-  session_attributes['movement'] = movement
-  session_attributes['roomInteraction'] = room
-  return {"movement":movement,"roomInteraction":room}
 
 def build_speechlet_response(title, output, reprompt_text, should_end_session):
     return {
@@ -51,48 +39,33 @@ def build_response(session_attributes, speechlet_response):
 
 
 # --------------- Functions that control the skill's behavior ------------------
-def intro(attributes):
+def intro():
     welcome = "You wake up much more excited than normal on this Saturday morning. Rolling out of bed, you realize that your new Armazon echo has arrived. Running to your front door you find it in its sleek black package. Before ordering you had heard rumors of the echo recording conversations to use in advertising but you brushed them off as conspiracy theories. You spend the entire morning setting up your echo right in the middle of your house and getting it running so that you can have the entire world of consumerism at your fingertips. After setting it up you decide to take a nap and sleeo for a while. You are currently in the bedroom. "
-    return build_response(attributes,build_speechlet_response("Intro",welcome,"Please choose a direction.", True))
+    return build_response({},build_speechlet_response("Intro",welcome,"Please choose a direction.", False))
 
 def handle_session_end_request():
     return build_response({},build_speechlet_response("Exit","Thank you for playing. Big sister is watching.","",True))
 
-def computer(o)
-    if o == 'toilet':
-        return("You check your computer. The news scrolls across your screen. You seem to notice that among the normal random advertisements there are also quite a few with mentions to anti-depressants. You wonder if your browsing history has led to adsense thinking that you are depressed like your friend did. ")
-    if o == 'dog':
-        return("You check your computer. After browsing reddit for a while, you see an e-mail pop up. It is from JoJo's Fatty Pooch Dog Chow, offering a 50% off coupon on your next order. You think that this is super helpful as you were just talking about how you needed some more. How neat.")
-    if o == 'door':
-        return("You check your computer. You think to yourself about the man at the door. The idea of a credit card chip seems ridiculous, but an artice on footbook seems to show that those who get the chip are happier and have a better quality of life. Maybe you should look into it after all.")
-    if o == 'phone':
-        return("You check your computer. The ads seem to be becoming more and more targeted towards the things in your life. Many of the banners at the top of the screen are about Fallout five and other EA titles. You start to become increasingly suspicious towards the machine in the middle of your house that you were so excited about just this morning.")
-    if o == 'sam':
-        return("You check your computer. After getting berated earlier, you decide to check some job-hunting sites. As you scroll through you feel even more worthless, you don't qualify for most of the jobs and those you do apply for never reply. As you try to take a break and scroll through some social media you seem to be berated by ads about getting a job.")
-
 def move(intent, session):
-  movement = session['attributes']['movement']
-  room = session['attributes']['room']
-  #if "direction" in intent['slot']:
-    #direction = intent['slot']['direction']['value']
-    #position = movement.getNextPosition(direction)
-  move_str = movement.changePosition(direction)
-  session_attributes = setAttributes(movement, room)
-  build_response(session_attributes,build_speechlet_response("Move",move_str,"",False))
+    if "Direction" in intent['slots']:
+        direction = intent['slots']['Direction']['value']
+    else:
+        direction = "test"
+    move_str = movement.changePosition(direction)
+    return build_response({},build_speechlet_response("Move",move_str,"",False))
 
 def info(intent, session):
-  movement = session['attributes']['movement']
-  room = session['attributes']['room']
-  build_response({},build_speechlet_response("Info",room.getInfo() + movement.getMovementOptionsText(),"Anything else?",False))
+    r = room.getInfo(movement.getPositionName()) + movement.getMovementOptionsText()
+    #r = movement.getMovementOptionsText()
+    return build_response({},build_speechlet_response("Info",r,"Anything else?",False))
 
 def help():
     help = "Use your voice to move around and interact with things."
     return build_response({},build_speechlet_response("Help",help,"",False))
 
 def interact(intent, session):
-  movement, room = session['attributes']
-  if "object" in intent['slot']:
-    obj = intent['slot']['direction']['value']
+  if "name" in intent['slots']:
+    obj = intent['slots']['name']['type']
   pos = movement.getPositionName()
   text = room.interact(pos, obj)
 
@@ -116,25 +89,18 @@ def on_launch(launch_request, session):
   print("on_launch requestId=" + launch_request['requestId'] +
         ", sessionId=" + session['sessionId'])
   # Dispatch to your skill's launch
-  movement = gameMovement.Game()
-  movement = pickle.dumps(movement)
-  room = gameRoom.RoomInteraction()
-  room = pickle.dumps(room)
-
-  session_attributes = {'movement':movement, 'roomInteraction':room}
-
-  return intro(session_attributes)
+  return intro()
 
 
 def on_intent(intent_request, session):
     """ Called when the user specifies an intent for this skill """
-    roomInteraction = gameRoom.RoomInteraction()
+    
     print("on_intent requestId=" + intent_request['requestId'] +
           ", sessionId=" + session['sessionId'])
 
     intent = intent_request['intent']
     intent_name = intent_request['intent']['name']
-
+    roomInteraction = gameRoom.RoomInteraction()
     # Dispatch to your skill's intent handlers
     if intent_name == "Go":
         return move(intent, session)
