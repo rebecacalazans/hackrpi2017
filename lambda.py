@@ -38,9 +38,9 @@ def build_response(session_attributes, speechlet_response):
 
 
 # --------------- Functions that control the skill's behavior ------------------
-def intro():
+def intro(attributes):
     welcome = "You wake up much more excited than normal on this Saturday morning. Rolling out of bed, you realize that your new Armazon echo has arrived. Running to your front door you find it in its sleek black package. Before ordering you had heard rumors of the echo recording conversations to use in advertising but you brushed them off as conspiracy theories. You spend the entire morning setting up your echo right in the middle of your house and getting it running so that you can have the entire world of consumerism at your fingertips. After setting it up you decide to take a nap and sleeo for a while. You are currently in the bedroom. "
-    return build_response({},build_speechlet_response("Intro",welcome,"Please choose a direction.", True))
+    return build_response(attributes,build_speechlet_response("Intro",welcome,"Please choose a direction.", True))
 
 def handle_session_end_request():
     return build_response({},build_speechlet_response("Exit","Thank you for playing. Big sister is watching.","",True))
@@ -82,13 +82,15 @@ def on_launch(launch_request, session):
           ", sessionId=" + session['sessionId'])
     # Dispatch to your skill's launch
 
-    #SET GAME STATE 
-    return intro()
+    #SET GAME STATE
+    session_attributes = {'movement': gameMovement.Game(),'roomInteraction':gameRoom.RoomInteraction(), 'urgent': 0}
+
+    return intro(session_attributes)
 
 
 def on_intent(intent_request, session):
     """ Called when the user specifies an intent for this skill """
-roomInteraction = RoomInteraction()
+    roomInteraction = RoomInteraction()
     print("on_intent requestId=" + intent_request['requestId'] +
           ", sessionId=" + session['sessionId'])
 
