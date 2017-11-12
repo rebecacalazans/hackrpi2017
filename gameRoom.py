@@ -52,14 +52,14 @@ class RoomInteraction:
 
     if room == "Bedroom":
       self.urgent = 0
-      return("computer stuff")
+      return "computer stuff"
     if self.urgent == 1:
-      return("You really should head into your bedroom and check out your computer. You have a sudden urge to see what's going on in this cruel world")
+      return "You really should head into your bedroom and check out your computer. You have a sudden urge to see what's going on in this cruel world"
     if self.visited[room] == 1:
-      return (self.getInfo(room))
+      return self.getInfo(room)
     self.urgent = 1
     self.visited[room] = 1
-    return (self.roomInteractionMessage[room])
+    return self.roomInteractionMessage[room]
 
   def getAd(self, a):
     rads = ["Introduce your home to the new Smart House, by armazon. Connect everything to our network! We promise it's safe."]

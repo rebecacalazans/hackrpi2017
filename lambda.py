@@ -51,7 +51,7 @@ def move(intent, session):
         direction = intent['slots']['Direction']['value']
     else:
         direction = "test"
-    move_str = movement.changePosition(direction) + room.getInfo(movement.getPositionName())
+    move_str = movement.changePosition(direction)
     return build_response({},build_speechlet_response("Move",move_str,"",False))
 
 def info(intent, session):
@@ -64,11 +64,14 @@ def help():
     return build_response({},build_speechlet_response("Help",help,"",False))
 
 def interact(intent, session):
-  obj = intent['slots']['Object']['value']
+  if "name" in intent['slots']:
+    obj = intent['slots']['name']['type']
   pos = movement.getPositionName()
   text = room.interact(pos, obj)
 
-  return build_response({},build_speechlet_response("Interact",text,"",False))
+  session['attributes'] = getAttributes(movement, room)
+
+  build_response({},build_speechlet_response("Interact",text,"",True))
 # --------------- Events ------------------
 
 def on_session_started(session_started_request, session):
@@ -106,15 +109,12 @@ def on_intent(intent_request, session):
     elif intent_name == "Help":
         return help()
     elif intent_name == "Interact":
-        return interact(intent,session)
+        return interact()
     elif intent_name == "" or intent_name == "AMAZON.StopIntent":
         return handle_session_end_request()
     else:
         raise ValueError("Invalid intent")
 
-def end():
-    #Ending dialogue
-    return("Laying down for the night you think back on the events of the past day. As you recall each of the people you talked to you realize that the ads you had seen were specifically targeted to the topics of the conversations you had. How would they be able to know what you were talking about? Then it dawns on you. The armazon echo, sitting proudly on the table in the center of your house had been transmitting all of your information even when it was supposedly not listening. You jump up and go to call the news station and let them know that you have a way to prove the conspiracy theories. After hanging up the phone you hear your doorbell ring. As you open it up you see an armazon drone speeding away. Looking down you realize there is a package at your feet with the label big sister is watching, then BOOM, the package explodes. The secret remains safe with armazon. The end.")
 
 def on_session_ended(session_ended_request, session):
     """ Called when the user ends the session.
