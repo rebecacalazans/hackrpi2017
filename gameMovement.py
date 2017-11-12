@@ -54,16 +54,28 @@ class Game:
       print '\n',
 
   def changePosition(self, action):
-    if action not in self.getLegalActions(self.position):
-      print("Ilegal Action")
+    nextPosition = self.getNextPosition(action, self.position)
+    if(nextPosition == False):
       return False
+    self.position = nextPosition
+    return True
+
+  def getNextPosition(self, action, position = 0):
+    if position == 0:
+      position = self.position
+
+    if action not in self.getLegalActions(position):
+      return False
+
     actions = ["east", "north", "west", "south"]
     dx = [1, 0, -1, 0]
     dy = [0, 1, 0, -1]
-    if action in actions:
-      x, y = self.position
-      index = actions.index(action)
-      self.position  = (x+dx[index], y+dy[index])
+
+    x, y, = position
+    index = actions.index(action)
+    return (x+dx[index], y+dy[index])
+
+
 
   def getLegalActions(self, position = 0):
     if position == 0:
