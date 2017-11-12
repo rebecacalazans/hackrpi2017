@@ -4,8 +4,10 @@ Our repo for the BigSister Alexa Text Game
 ## Deploying with Zappa
 After downloading the repo, activate the virtual environment with:
 `source venv/bin/activate`
+
 If the zappa is not deployed, deploy it with:
 `zappa deploy dev`
+
 Every change to the source files requires you to update with:
 `zappa update`
 
