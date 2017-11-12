@@ -68,7 +68,7 @@ def interact(intent, session):
   pos = movement.getPositionName()
   text = room.interact(pos, obj)
 
-  build_response({},build_speechlet_response("Interact",text,"",False))
+  return build_response({},build_speechlet_response("Interact",text,"",False))
 # --------------- Events ------------------
 
 def on_session_started(session_started_request, session):
