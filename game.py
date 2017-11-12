@@ -1,10 +1,12 @@
 from flask import *
 from flask_ask import *
 import random
+import gameMovement
 
 app = Flask(__name__)
 ask = Ask(app,'/')
 logging.getLogger("flask_ask").setLevel(logging.DEBUG)
+
 
 def useComputer():
   events = session.attributes['events']
@@ -95,14 +97,15 @@ def getInfo():
 
 @ask.launch #Welcome sentence
 def launch():
+  session.attributes['movement'] = gameMovement.Game()
+  session.attributes['room'] = movement.getPositionName()
   session.attributes['urgent'] = 0
-  session.attributes['room'] = "Bedroom"
   session.attributes['events'] = {'Bathroom':0,'Livingroom':0,'Kitchen':0,'Office':0,'Porch':0}
   return question("You wake up on a dull Saturday morning, ")
 
 @ask.intent('Go') #Change rooms
 def door(d): #door, N,S,E,W
-  go(d)
+  session.attributes['movement'].changePosition(d)
   info = getInfo()
   return question(info)
 
