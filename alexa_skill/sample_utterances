@@ -1,0 +1,31 @@
+AMAZON.PauseIntent pause
+AMAZON.PauseIntent stop
+AMAZON.PauseIntent shut up
+
+AMAZON.ResumeIntent keep going
+AMAZON.ResumeIntent resume
+AMAZON.ResumeIntent continue
+AMAZON.ResumeIntent play
+
+Go go
+Go move
+Go walk
+
+Help help
+Help assistance
+Help what the
+
+Info info
+Info details
+Info more
+
+Interact interact
+Interact choose
+Interact select
+
+Inventory open inventory
+Inventory inventory
+Inventory my things
+Inventory my stuff
+Inventory stuff
+Inventory things

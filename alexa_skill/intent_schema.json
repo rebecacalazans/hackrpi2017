@@ -1,0 +1,31 @@
+{
+	"intents": {
+		{
+      "intent": "AMAZON.PauseIntent"
+    },
+    {
+      "intent": "AMAZON.ResumeIntent"
+    }
+	  {
+	  	"intent": "Go"
+	  },
+	  {
+	  	"intent": "Name"
+	  },
+	  {
+	  	"intent": "Start"
+	  },
+	  {
+	  	"intent": "Help"
+	  },
+	  {
+	  	"intent": "Info"
+	  },
+	  {
+	  	"intent": "Interact"
+	  },
+	  {
+	  	"intent": "Inventory"
+	  }
+	}
+}
