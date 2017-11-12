@@ -58,6 +58,18 @@ def intro(attributes):
 def handle_session_end_request():
     return build_response({},build_speechlet_response("Exit","Thank you for playing. Big sister is watching.","",True))
 
+def computer(o)
+    if o == 'toilet':
+        return("You check your computer. The news scrolls across your screen. You seem to notice that among the normal random advertisements there are also quite a few with mentions to anti-depressants. You wonder if your browsing history has led to adsense thinking that you are depressed like your friend did. ")
+    if o == 'dog':
+        return("You check your computer. After browsing reddit for a while, you see an e-mail pop up. It is from JoJo's Fatty Pooch Dog Chow, offering a 50% off coupon on your next order. You think that this is super helpful as you were just talking about how you needed some more. How neat.")
+    if o == 'door':
+        return("You check your computer. You think to yourself about the man at the door. The idea of a credit card chip seems ridiculous, but an artice on footbook seems to show that those who get the chip are happier and have a better quality of life. Maybe you should look into it after all.")
+    if o == 'phone':
+        return("You check your computer. The ads seem to be becoming more and more targeted towards the things in your life. Many of the banners at the top of the screen are about Fallout five and other EA titles. You start to become increasingly suspicious towards the machine in the middle of your house that you were so excited about just this morning.")
+    if o == 'sam':
+        return("You check your computer. After getting berated earlier, you decide to check some job-hunting sites. As you scroll through you feel even more worthless, you don't qualify for most of the jobs and those you do apply for never reply. As you try to take a break and scroll through some social media you seem to be berated by ads about getting a job.")
+
 def move(intent, session):
   movement = session['attributes']['movement']
   room = session['attributes']['room']
