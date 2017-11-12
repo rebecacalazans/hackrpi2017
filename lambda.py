@@ -1,9 +1,25 @@
 from __future__ import print_function
-import gameMovement.py
-import gameRoom.py
+import gameMovement
+import gameRoom
+import pickle
 
 ##ALL GLOBALS MUST BE PASSED AS SESSION ATTRIBUTES
 # --------------- Helpers that build all of the responses ----------------------
+
+def getVariables(session_attributes):
+  movement = session_attributes['movement']
+  room = session_attributes['roomInteraction']
+  movement = pickle.loads(movement)
+  room = pickle.loads(room)
+
+  return(movement, room)
+
+def setVariables(session_attributes, movement, room):
+  movement = pickle.dumps(movement)
+  room = pickle.dumps(room)
+  session_attributes['movement'] = movement
+  session_attributes['roomInteraction'] = room
+  return {"movement":movement,"roomInteraction":room}
 
 def build_speechlet_response(title, output, reprompt_text, should_end_session):
     return {
@@ -43,46 +59,57 @@ def handle_session_end_request():
     return build_response({},build_speechlet_response("Exit","Thank you for playing. Big sister is watching.","",True))
 
 def move(intent, session):
-    if "direction" in intent['slot']:
-        direction = intent['slot']['direction']['value']
-        position = gameMovement.getNextPosition(direction)
-        if session['attributes']['movement'].changePosition(direction):
-            move_str = gameMovement.getMovementOptionsText()
-            build_response({"position":position},build_speechlet_response("Move",move_str,"",False))
-        else:
-            build_response({"position":position},build_speechlet_response("Invalid Move","The movement attribute did not work.","",False))
-    else:
-    return build_response({},build_speechlet_response("Invalid Move","Invalid move.","",False))
-
+  movement, room = session['attributes']
+  #if "direction" in intent['slot']:
+    #direction = intent['slot']['direction']['value']
+    #position = movement.getNextPosition(direction)
+  move_str = movement.changePosition(direction)
+  session['attributes'] = setAttributes(movement, room)
+  build_response(session_attributes,build_speechlet_response("Move",move_str,"",False))
 
 def info(intent, session):
-    build_response({},build_speechlet_response("Info","Info","",True))
+  movement, room = session['attributes']
+  build_response({},build_speechlet_response("Info",room.getInfo() + movement.getMovementOptionsText(),"",True))
 
 def help():
     help = "Use your voice to move around and interact with things."
     return build_response({},build_speechlet_response("Help",help,"",False))
+
+def interact(intent, session):
+  movement, room = session['attributes']
+  if "object" in intent['slot']:
+    obj = intent['slot']['direction']['value']
+  pos = movement.getPositionName()
+  text = room.interact(pos, obj)
+
+  session['attributes'] = getAttributes(movement, room)
+
+  build_response({},build_speechlet_response("Interact",text,"",True))
 # --------------- Events ------------------
 
 def on_session_started(session_started_request, session):
-    """ Called when the session starts """
+  """ Called when the session starts """
 
-    print("on_session_started requestId=" + session_started_request['requestId']
-          + ", sessionId=" + session['sessionId'])
+  print("on_session_started requestId=" + session_started_request['requestId']
+        + ", sessionId=" + session['sessionId'])
 
 
 def on_launch(launch_request, session):
-    """ Called when the user launches the skill without specifying what they
-    want
-    """
+  """ Called when the user launches the skill without specifying what they
+  want
+  """
 
-    print("on_launch requestId=" + launch_request['requestId'] +
-          ", sessionId=" + session['sessionId'])
-    # Dispatch to your skill's launch
+  print("on_launch requestId=" + launch_request['requestId'] +
+        ", sessionId=" + session['sessionId'])
+  # Dispatch to your skill's launch
+  movement = gameMovement.Game()
+  movement = pickle.dumps(movement)
+  room = gameRoom.RoomInteraction()
+  room = picke.dumps(room)
 
-    #SET GAME STATE
-    session_attributes = {'movement': gameMovement.Game(),'roomInteraction':gameRoom.RoomInteraction(), 'urgent': 0}
+  session_attributes = {'movement':movement, 'roomInteraction':room}
 
-    return intro(session_attributes)
+  return intro(session_attributes)
 
 
 def on_intent(intent_request, session):
@@ -101,6 +128,8 @@ def on_intent(intent_request, session):
         return info(intent, session)
     elif intent_name == "Help":
         return help()
+    elif intent_name == "Interact":
+        return interact()
     elif intent_name == "" or intent_name == "AMAZON.StopIntent":
         return handle_session_end_request()
     else:
