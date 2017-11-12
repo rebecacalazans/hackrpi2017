@@ -7,12 +7,15 @@ app = Flask(__name__)
 ask = Ask(app,'/')
 logging.getLogger("flask_ask").setLevel(logging.DEBUG)
 
+def move():
+  movment = session.attributes['movement']
+  
 
 def useComputer():
   events = session.attributes['events']
 
 def interact(o):
-  room = session.attributes['room']
+  room = session.attributes['movement'].getPositionName()
   event = session.attributes['events']
   urgent = session.attributes['urgent']
   if urgent == 0:
@@ -59,49 +62,48 @@ def getAd(a):
   return ads[a]
 
 def getInfo():
-  room = session.attributes['room']
+  room = session.attributes['movement'].getPositionName()
   event = session.attributes['events']
   if room == 'Bathroom':
     if event['Bathroom'] == 0:
-      return("You are in the bathroom. The toilet stares at you. You stare back. You wonder if you should use it. To the East is the Living Room.")
+      return("You are in the bathroom. The toilet stares at you. You stare back. You wonder if you should use it. "+move())
     else:
-      return("You are in the bathroom. You have already used the bathroom today. Try again tommorow. To the East is the Living Room.")
+      return("You are in the bathroom. You have already used the bathroom today. Try again tommorow. "+move())
   elif room == 'Livingroom':
     if event['Livingroom'] == 0:
-      return("You are in the living room. There is a small T.V. an old armchair and a sofa. You hear a knock at the front door. To your East is the kitchen. To the West is the Bathroom. To the North is the Hallway.")
+      return("You are in the living room. There is a small T.V. an old armchair and a sofa. You hear a knock at the front door. "+move())
     else:
-      return("You are in the living room. The T.V. crackles in the background. To your East is the kitchen. To the West is the Bathroom. To the North is the Hallway.")
+      return("You are in the living room. The T.V. crackles in the background. "+move())
   elif room == 'Kitchen':
     if event['Kitchen'] == 0:
-      return("You are in the kitchen. It seems like months since the last time you had the motivation to cook anything in here. Your dog sits in the corner. You should give him a pat on the head. He looks hungry. You wouldn't want him to starve. To the West is the living Room.") 
+      return("You are in the kitchen. It seems like months since the last time you had the motivation to cook anything in here. Your dog sits in the corner. You should give him a pat on the head. He looks hungry. You wouldn't want him to starve. "+move()) 
     else:
-      return('You are in the kitchen. Your doggo looks so full and chunky, like the average american. Good thing you fed him already. To the West is the living room.')
+      return('You are in the kitchen. Your doggo looks so full and chunky. Good thing you fed him already. '+move())
 
   elif room == 'Office':
     if event['Office'] == 0:
-      return('You are in the office. So much of your life has been wasted here. You have many fond memories of slaving away behind this desk for a faceless corporation that does not care about you or your wellbeing. You see your phone beside the couch. You wonder if any of your friends will want to speak to you. Probably not, but you should try anyway. To the East is the Hallway"')
+      return('You are in the office. So much of your life has been wasted here. You have many fond memories of slaving away behind this desk for a faceless corporation that does not care about you or your wellbeing. You see your phone beside the couch. You wonder if any of your friends will want to speak to you. Probably not, but you should try anyway.'+move())
     else:
-      return("You are in the office. You remember all of the wasted years. Your friends didn't even want to talk with you. To the West is the hallway.")
+      return("You are in the office. You remember all of the wasted years. Your friends didn't even want to talk with you. "+move())
 
   elif room == 'Porch':
     if event['Porch'] == 0:
-      return("You are in the back porch. Your significant other, Sam, sits across from you smoking. You wonder when they last gave you the time of day. Might as well try to start up a conversation. To the South is the hallway") 
+      return("You are in the back porch. Your significant other, Sam, sits across from you smoking. You wonder when they last gave you the time of day. Might as well try to start up a conversation. "+move()) 
     else:
-      return("You are in the back porch. Your significant other, Sam, continues smoking, no longer wanting to have a conversation with someone as worthless as you. To the South is the hallway.")
+      return("You are in the back porch. Your significant other, Sam, continues smoking, no longer wanting to have a conversation with someone as worthless as you. "+move())
 
   elif room == 'Hallway':
-    return("You are in the hallway. Your shiny new Armazon Echo sits proudly on the center table. You hear an ad. It says " + getAd('rand') + " To the North is the back porch. To the West is the bedroom. To the East is the office. To the South is the Living room.")
+    return("You are in the hallway. Your shiny new Armazon Echo sits proudly on the center table. You hear an ad. It says " + getAd('rand') +move())
 
   elif room == 'Bedroom':
-    return("You are in the bedroom. There is a computer in the corner and an unmade bed. Sleeping is the only thing left in the world you enjoy. To the East is the hallway.")
+    return("You are in the bedroom. There is a computer in the corner and an unmade bed. Sleeping is the only thing left in the world you enjoy."+move())
 
 @ask.launch #Welcome sentence
 def launch():
   session.attributes['movement'] = gameMovement.Game()
-  session.attributes['room'] = movement.getPositionName()
   session.attributes['urgent'] = 0
   session.attributes['events'] = {'Bathroom':0,'Livingroom':0,'Kitchen':0,'Office':0,'Porch':0}
-  return question("You wake up on a dull Saturday morning, ")
+  return question("You wake up much more excited than normal on this Saturday morning. Rolling out of bed, you realize that your new Armazon echo has arrived. Running to your front door you find it in its sleek black package. Before ordering you had heard rumors of the echo recording conversations to use in advertising but you brushed them off as conspiracy theories. You spend the entire morning setting up your echo right in the middle of your house and getting it running so that you can have the entire world of consumerism at your fingertips. After setting it up you decide to take a nap and sleeo for a while. You are currently in the bedroom. " + move())
 
 @ask.intent('Go') #Change rooms
 def door(d): #door, N,S,E,W
