@@ -70,6 +70,12 @@ class Game:
       position = self.position
     return self.legalActions[position]
 
-  def getPosition(self):
-    print self.house[self.position[0]][self.position[1]]
+  def getPosition(self, position = 0):
+    if position == 0: position = self.position
+    return self.house[position[0]][position[1]]
+
+  def getPositionName(self, position = 0):
+    if position == 0: position = self.position
+    positionNames = ["Ilegal", "Bedroom", "Bathroom", "Kitchen", "Livingroom", "Office", "Hallway", "Porch"]
+    return positionNames[self.getPosition(position)]
 
