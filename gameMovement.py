@@ -91,3 +91,9 @@ class Game:
     positionNames = ["Ilegal", "Bedroom", "Bathroom", "Kitchen", "Livingroom", "Office", "Hallway", "Porch"]
     return positionNames[self.getPosition(position)]
 
+  def getMovementOptionsText(self):
+    legalActions = self.getLegalActions()
+    text = ["Go to the " + action + " to go to the " + self.getPositionName(self.getNextPosition(action)) for action in legalActions]
+    return '\n'.join(text)
+
+

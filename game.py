@@ -7,10 +7,6 @@ app = Flask(__name__)
 ask = Ask(app,'/')
 logging.getLogger("flask_ask").setLevel(logging.DEBUG)
 
-def move():
-  movment = session.attributes['movement']
-  
-
 def useComputer():
   events = session.attributes['events']
 
@@ -66,37 +62,37 @@ def getInfo():
   event = session.attributes['events']
   if room == 'Bathroom':
     if event['Bathroom'] == 0:
-      return("You are in the bathroom. The toilet stares at you. You stare back. You wonder if you should use it. "+move())
+      return("You are in the bathroom. The toilet stares at you. You stare back. You wonder if you should use it. "+session.attributes['movement'].getMovementOptionsText())
     else:
-      return("You are in the bathroom. You have already used the bathroom today. Try again tommorow. "+move())
+      return("You are in the bathroom. You have already used the bathroom today. Try again tommorow. "+session.attributes['movement'].getMovementOptionsText())
   elif room == 'Livingroom':
     if event['Livingroom'] == 0:
-      return("You are in the living room. There is a small T.V. an old armchair and a sofa. You hear a knock at the front door. "+move())
+      return("You are in the living room. There is a small T.V. an old armchair and a sofa. You hear a knock at the front door. "+session.attributes['movement'].getMovementOptionsText())
     else:
-      return("You are in the living room. The T.V. crackles in the background. "+move())
+      return("You are in the living room. The T.V. crackles in the background. "+session.attributes['movement'].getMovementOptionsText())
   elif room == 'Kitchen':
     if event['Kitchen'] == 0:
-      return("You are in the kitchen. It seems like months since the last time you had the motivation to cook anything in here. Your dog sits in the corner. You should give him a pat on the head. He looks hungry. You wouldn't want him to starve. "+move()) 
+      return("You are in the kitchen. It seems like months since the last time you had the motivation to cook anything in here. Your dog sits in the corner. You should give him a pat on the head. He looks hungry. You wouldn't want him to starve. "+session.attributes['movement'].getMovementOptionsText()) 
     else:
-      return('You are in the kitchen. Your doggo looks so full and chunky. Good thing you fed him already. '+move())
+      return('You are in the kitchen. Your doggo looks so full and chunky. Good thing you fed him already. '+session.attributes['movement'].getMovementOptionsText())
 
   elif room == 'Office':
     if event['Office'] == 0:
-      return('You are in the office. So much of your life has been wasted here. You have many fond memories of slaving away behind this desk for a faceless corporation that does not care about you or your wellbeing. You see your phone beside the couch. You wonder if any of your friends will want to speak to you. Probably not, but you should try anyway.'+move())
+      return('You are in the office. So much of your life has been wasted here. You have many fond memories of slaving away behind this desk for a faceless corporation that does not care about you or your wellbeing. You see your phone beside the couch. You wonder if any of your friends will want to speak to you. Probably not, but you should try anyway.'+session.attributes['movement'].getMovementOptionsText())
     else:
-      return("You are in the office. You remember all of the wasted years. Your friends didn't even want to talk with you. "+move())
+      return("You are in the office. You remember all of the wasted years. Your friends didn't even want to talk with you. "+session.attributes['movement'].getMovementOptionsText())
 
   elif room == 'Porch':
     if event['Porch'] == 0:
-      return("You are in the back porch. Your significant other, Sam, sits across from you smoking. You wonder when they last gave you the time of day. Might as well try to start up a conversation. "+move()) 
+      return("You are in the back porch. Your significant other, Sam, sits across from you smoking. You wonder when they last gave you the time of day. Might as well try to start up a conversation. "+session.attributes['movement'].getMovementOptionsText()) 
     else:
-      return("You are in the back porch. Your significant other, Sam, continues smoking, no longer wanting to have a conversation with someone as worthless as you. "+move())
+      return("You are in the back porch. Your significant other, Sam, continues smoking, no longer wanting to have a conversation with someone as worthless as you. "+session.attributes['movement'].getMovementOptionsText())
 
   elif room == 'Hallway':
-    return("You are in the hallway. Your shiny new Armazon Echo sits proudly on the center table. You hear an ad. It says " + getAd('rand') +move())
+    return("You are in the hallway. Your shiny new Armazon Echo sits proudly on the center table. You hear an ad. It says " + getAd('rand') +session.attributes['movement'].getMovementOptionsText())
 
   elif room == 'Bedroom':
-    return("You are in the bedroom. There is a computer in the corner and an unmade bed. Sleeping is the only thing left in the world you enjoy."+move())
+    return("You are in the bedroom. There is a computer in the corner and an unmade bed. Sleeping is the only thing left in the world you enjoy."+session.attributes['movement'].getMovementOptionsText())
 
 @ask.launch #Welcome sentence
 def launch():
