@@ -68,7 +68,7 @@ def interact(intent, session):
   pos = movement.getPositionName()
   text = room.interact(pos, obj)
 
-  build_response({},build_speechlet_response("Interact",text,"",True))
+  build_response({},build_speechlet_response("Interact",text,"",False))
 # --------------- Events ------------------
 
 def on_session_started(session_started_request, session):
@@ -106,7 +106,7 @@ def on_intent(intent_request, session):
     elif intent_name == "Help":
         return help()
     elif intent_name == "Interact":
-        return interact()
+        return interact(intent,session)
     elif intent_name == "" or intent_name == "AMAZON.StopIntent":
         return handle_session_end_request()
     else:
