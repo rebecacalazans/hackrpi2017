@@ -56,9 +56,9 @@ class Game:
   def changePosition(self, action):
     nextPosition = self.getNextPosition(action, self.position)
     if(nextPosition == False):
-      return False
+      return "Invalid movement"
     self.position = nextPosition
-    return True
+    return "Now you are in the " + getPositionName(nextPosition)
 
   def getNextPosition(self, action, position = 0):
     if position == 0:
