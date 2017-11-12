@@ -51,7 +51,7 @@ def move(intent, session):
         direction = intent['slots']['Direction']['value']
     else:
         direction = "test"
-    move_str = movement.changePosition(direction)
+    move_str = movement.changePosition(direction) + room.getInfo(movement.getPositionName())
     return build_response({},build_speechlet_response("Move",move_str,"",False))
 
 def info(intent, session):
