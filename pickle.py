@@ -268,8 +268,7 @@ def _getattribute(obj, name):
             parent = obj
             obj = getattr(obj, subpath)
         except AttributeError:
-            raise AttributeError("Can't get attribute {!r} on {!r}"
-                                 .format(name, obj)) from None
+            raise AttributeError("Can't get attribute {!r} on {!r}").format(name, obj)) from None
     return obj, parent
 
 def whichmodule(obj, name):
