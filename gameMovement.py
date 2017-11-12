@@ -59,7 +59,7 @@ class Game:
       return "Invalid movement"
     else:
       self.position = nextPosition
-      return "Now you are in the " + getPositionName(nextPosition)
+      return "Now you are in the " + self.getPositionName(nextPosition)
 
   def getNextPosition(self, action, position = 0):
     if position == 0:
