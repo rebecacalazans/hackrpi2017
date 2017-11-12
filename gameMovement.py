@@ -17,7 +17,7 @@ class Game:
 
     def addLegalAction(k, possible):
       while(True):
-        actions = ["right", "up", "left", "down"]
+        actions = ["east", "north", "west", "south"]
         dx = [1, 0, -1, 0]
         dy = [0, 1, 0, -1]
 
@@ -57,7 +57,7 @@ class Game:
     if action not in self.getLegalActions(self.position):
       print("Ilegal Action")
       return False
-    actions = ["right", "up", "left", "down"]
+    actions = ["east", "north", "west", "south"
     dx = [1, 0, -1, 0]
     dy = [0, 1, 0, -1]
     if action in actions:
