@@ -107,7 +107,7 @@ def on_launch(launch_request, session):
   movement = gameMovement.Game()
   movement = pickle.dumps(movement)
   room = gameRoom.RoomInteraction()
-  room = picke.dumps(room)
+  room = pickle.dumps(room)
 
   session_attributes = {'movement':movement, 'roomInteraction':room}
 
@@ -116,7 +116,7 @@ def on_launch(launch_request, session):
 
 def on_intent(intent_request, session):
     """ Called when the user specifies an intent for this skill """
-    roomInteraction = RoomInteraction()
+    roomInteraction = gameRoom.RoomInteraction()
     print("on_intent requestId=" + intent_request['requestId'] +
           ", sessionId=" + session['sessionId'])
 
