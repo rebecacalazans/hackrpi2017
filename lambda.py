@@ -1,11 +1,8 @@
 from __future__ import print_function
+import gameMovement.py
+import gameRoom.py
 
-
-###GLOBALS###
-
-#############
-
-
+##ALL GLOBALS MUST BE PASSED AS SESSION ATTRIBUTES
 # --------------- Helpers that build all of the responses ----------------------
 
 def build_speechlet_response(title, output, reprompt_text, should_end_session):
@@ -48,12 +45,12 @@ def handle_session_end_request():
 def move(intent, session):
     if "direction" in intent['slot']:
         direction = intent['slot']['direction']['value']
-        position = getNextPosition(direction)
-        if movement.changePosition(direction):
-            move_str = getMovementOptionsText()
+        position = gameMovement.getNextPosition(direction)
+        if session['attributes']['movement'].changePosition(direction):
+            move_str = gameMovement.getMovementOptionsText()
             build_response({"position":position},build_speechlet_response("Move",move_str,"",False))
         else:
-            build_response({"position":position},build_speechlet_response("Invalid Move","Invalid move.","",False))
+            build_response({"position":position},build_speechlet_response("Invalid Move","The movement attribute did not work.","",False))
     else:
         build_response({},build_speechlet_response("Invalid Move","Invalid move.","",False))
 
