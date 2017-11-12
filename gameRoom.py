@@ -17,9 +17,8 @@ class RoomInteraction:
     self.roomObject['Kitchen'] = 'dog'
     self.roomObject['livingroom'] = 'door'
     self.roomObject['Office'] = 'phone'
-    self.roomObject['Porch'] = 'sam'
+    self.roomObject['Porch'] = 'Sam'
     self.roomObject['Bedroom'] = 'computer'
-    self.roomObject['livingroom'] = 'Door'
 
   def initializeRoomInteractionMessages(self):
     self.roomInteractionMessage = {}
