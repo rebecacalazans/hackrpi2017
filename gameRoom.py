@@ -7,6 +7,7 @@ class RoomInteraction:
     self.initializeRoomInteractionMessages()
     self.initializeRoomInfo()
     self.visited = {}
+    self.urgent = 0
     for room in self.rooms:
       self.visited[room] = 0
 
@@ -44,20 +45,20 @@ class RoomInteraction:
     self.roomInfo['Hallway'] = ("You are in the hallway. Your shiny new Armazon Echo sits proudly on the center table. You hear an ad. It says " + self.getAd('rand'))
     self.roomInfo['Bedroom'] = ("You are in the bedroom. There is a computer in the corner and an unmade bed. Sleeping is the only thing left in the world you enjoy.")
 
-  def interact(self, room, obj, urgent):
+  def interact(self, room, obj):
     if(obj != self.roomObject[room]):
-      return (urgent, "You can't interact with " + obj + " into this room")
+      return ("You can't interact with " + obj + " into this room")
 
     if room == "Bedroom":
-      urgent = 0
-      return(urgent, "computer stuff")
-    if urgent == 1:
-      return(urgent, "You really should head into your bedroom and check out your computer. You have a sudden urge to see what's going on in this cruel world")
+      self.urgent = 0
+      return("computer stuff")
+    if self.urgent == 1:
+      return("You really should head into your bedroom and check out your computer. You have a sudden urge to see what's going on in this cruel world")
     if self.visited[room] == 1:
-      return (urgent, self.getInfo(room))
-    urgent = 1
+      return (self.getInfo(room))
+    self.urgent = 1
     self.visited[room] = 1
-    return (urgent, self.roomInteractionMessage[room])
+    return (self.roomInteractionMessage[room])
 
   def getAd(self, a):
     rads = ["Introduce your home to the new Smart House, by armazon. Connect everything to our network! We promise it's safe."]
