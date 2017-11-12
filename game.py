@@ -2,6 +2,7 @@ from flask import *
 from flask_ask import *
 import random
 import gameMovement
+import gameRoom
 
 app = Flask(__name__)
 ask = Ask(app,'/')
