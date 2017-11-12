@@ -1,10 +1,10 @@
 {
     "dev": {
-        "app_function": "bigSister.bigSister", 
+        "app_function": "test.app", 
         "aws_region": "us-east-1", 
         "profile_name": "default", 
-        "project_name": "deploy", 
+        "project_name": "repo-stats", 
         "runtime": "python2.7", 
-        "s3_bucket": "bigSister"
+        "s3_bucket": "zappa-cihbhimqj"
     }
 }
