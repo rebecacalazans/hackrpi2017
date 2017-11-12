@@ -6,8 +6,8 @@ app = Flask(__name__)
 
 @app.route('/')
 def main():
-  return 'applicarion'
+  return 'application'
 
 
 
-app.run('0.0.0.0',80)
+app.run('0.0.0.0',1337)
