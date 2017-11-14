@@ -45,7 +45,7 @@ class RoomInteraction:
     self.roomInfo['Bedroom'] = ("You are in the bedroom. There is a computer in the corner and an unmade bed. Sleeping is the only thing left in the world you enjoy.")
 
   def interact(self, room, obj):
-    if(room not in roomObject):
+    if(room not in self.roomObject):
       return "You can't do that"
     if(obj != self.roomObject[room]):
       return "You can't do that"
